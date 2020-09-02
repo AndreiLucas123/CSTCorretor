@@ -10,10 +10,33 @@ namespace CSTCorretor
     static int Main(string[] args)
     {
       Console.WriteLine();
-      Console.WriteLine("  Iniciando corretor CST de 04 para 06");
+      Console.WriteLine("  Iniciando corretor CST, CFOP e CSOSN");
       Console.WriteLine();
+      Console.WriteLine("  Digite o modo:\n");
+      Console.WriteLine("  1 - CST");
+      Console.WriteLine("  2 - CST, CFOP e CSOSN\n");
+      Console.Write("  ");
 
-      Console.WriteLine("  Insira o caminho dos xml\n");
+      int modo;
+      var key = Console.ReadKey();
+      if (key.Key == ConsoleKey.NumPad1)
+      {
+        modo = 1;
+        Console.WriteLine(" - CST - SELECIONADO");
+      }
+      else if (key.Key == ConsoleKey.NumPad2)
+      {
+        modo = 2;
+        Console.Write(" - CST, CFOP e CSOSN - SELECIONADO");
+      }
+      else
+      {
+        Console.WriteLine("\n  Tecla inválida");
+        Console.ReadKey();
+        return 1;
+      }
+
+      Console.WriteLine("\n\n  Insira o caminho dos xml\n");
       Console.Write("  ");
       var path = Console.ReadLine();
 
@@ -28,9 +51,10 @@ namespace CSTCorretor
 
         if (files.Length == 0)
         {
-					Console.WriteLine();
-					Console.WriteLine("  Nenhum arquivo encontrado no diretório selecionado");
-					return 0;
+          Console.WriteLine();
+          Console.WriteLine("  Nenhum arquivo encontrado no diretório selecionado");
+          Console.ReadKey();
+          return 0;
         }
 
         // Process
@@ -38,7 +62,16 @@ namespace CSTCorretor
         for (int i = 0; i < files.Length; i++)
         {
           text = File.ReadAllText(files[i]);
-          text = text.Replace("<CST>04</CST>", "<CST>06</CST>");
+          if (modo == 1)
+          {
+            text = text.Replace("<CST>04</CST>", "<CST>06</CST>");
+          }
+          else
+          {
+            text = text.Replace("<CST>04</CST>", "<CST>01</CST>");
+            text = text.Replace("<CSOSN>300</CSOSN>", "<CSOSN>500</CSOSN>");
+            text = text.Replace("<CFOP>5102</CFOP>", "<CFOP>5405</CFOP>");
+          }
           File.WriteAllText(files[i], text);
           arquivos++;
           if (arquivos % 50 == 0)

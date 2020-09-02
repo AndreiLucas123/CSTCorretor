@@ -1,0 +1,3 @@
+<CST>04</CST>      -> 06
+<CSOSN>300</CSOSN> -> 500
+<CFOP>5102</CFOP>  -> 5405
